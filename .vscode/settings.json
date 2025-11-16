@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "refcount.h": "c",
+        "str_element.h": "c"
+    }
+}
