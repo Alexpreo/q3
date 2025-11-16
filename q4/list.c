@@ -119,7 +119,12 @@ int list_len (struct list* list) {
  *    in  is an element from in_list
  */
 void list_map1 (void (*f) (element_t*, element_t), struct list* out_list, struct list* in_list) {
-  // TODO
+  for (int i = 0; i < in_list->len; i++) {
+    element_t in_elem = in_list->data[i];
+    element_t out_elem = NULL; // Initialize to NULL as per function description
+    f(&out_elem, in_elem);     // f will allocate and set out_elem
+    list_append(out_list, out_elem);
+  }
 }
 
 /**
@@ -135,7 +140,18 @@ void list_map1 (void (*f) (element_t*, element_t), struct list* out_list, struct
  *    in1  is an element from in_list1
  */
 void list_map2 (void (*f) (element_t*, element_t, element_t), struct list* out_list, struct list* in_list0, struct list* in_list1) {
-  // TODO
+  int min_len = in_list0->len;
+  if (in_list1->len < min_len) {
+    min_len = in_list1->len;
+  }
+
+  for (int i = 0; i < min_len; i++) {
+    element_t in_elem0 = in_list0->data[i];
+    element_t in_elem1 = in_list1->data[i];
+    element_t out_elem = NULL;
+    f(&out_elem, in_elem0, in_elem1);
+    list_append(out_list, out_elem);
+  }
 }
 
 /**
@@ -148,7 +164,11 @@ void list_map2 (void (*f) (element_t*, element_t, element_t), struct list* out_l
  *    in1 is an element from in_list
  */
 void list_foldl (void (*f) (element_t*, element_t, element_t), element_t* out_element_p,  struct list* in_list) {
-  // TODO
+  for (int i = 0; i < in_list->len; i++) {
+    element_t in_elem = in_list->data[i];
+    element_t acc_val = *out_element_p;   // Get current accumulator value
+    f(out_element_p, acc_val, in_elem); // f updates the accumulator via the pointer
+  }
 }
 
 /**
@@ -161,7 +181,12 @@ void list_foldl (void (*f) (element_t*, element_t, element_t), element_t* out_el
  *    returns true (not zero) iff in should be included in out_list and false (zero) otherwise
  */
 void list_filter (int (*f) (element_t), struct list* out_list, struct list* in_list) {
-  // TODO
+  for (int i = 0; i < in_list->len; i++) {
+    element_t elem = in_list->data[i];
+    if (f(elem)) { // f(elem) returns non-zero (true)
+      list_append(out_list, elem); // Append the original element pointer
+    }
+  }
 }
 
 /**
